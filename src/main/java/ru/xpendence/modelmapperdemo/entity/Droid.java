@@ -1,12 +1,9 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -19,12 +16,20 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "droids")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Droid extends AbstractEntity {
 
     private String name;
     private Unicorn unicorn;
     private List<Cupcake> cupcakes;
     private Boolean alive;
+
+    public Droid(String name, Unicorn unicorn, Boolean alive) {
+        this.name = name;
+        this.unicorn = unicorn;
+        this.alive = alive;
+    }
 
     @Column(name = "name")
     public String getName() {

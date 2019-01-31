@@ -1,12 +1,9 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ru.xpendence.modelmapperdemo.attributes.Filling;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -19,6 +16,8 @@ import java.util.Objects;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cupcake extends AbstractEntity {
 
     private Filling filling;

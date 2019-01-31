@@ -1,13 +1,10 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ru.xpendence.modelmapperdemo.attributes.Color;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -20,6 +17,8 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Unicorn extends AbstractEntity {
 
     private String name;

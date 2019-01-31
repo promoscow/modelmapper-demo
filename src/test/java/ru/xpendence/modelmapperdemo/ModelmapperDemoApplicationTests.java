@@ -2,13 +2,16 @@ package ru.xpendence.modelmapperdemo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.xpendence.modelmapperdemo.attributes.Color;
 import ru.xpendence.modelmapperdemo.attributes.Filling;
+import ru.xpendence.modelmapperdemo.dto.UnicornDto;
 import ru.xpendence.modelmapperdemo.entity.Cupcake;
 import ru.xpendence.modelmapperdemo.entity.Droid;
 import ru.xpendence.modelmapperdemo.entity.Unicorn;
+import ru.xpendence.modelmapperdemo.mapper.UnicornMapper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +28,14 @@ public class ModelmapperDemoApplicationTests {
 
         private Long idCounter;
 
+        @Autowired
+        private UnicornMapper unicornMapper;
+
         @Test
         public void mapperTest() {
             idCounter = 1L;
             createEntities();
+            UnicornDto unicornDto = unicornMapper.toDto(unicorn);
             System.out.println();
         }
 
@@ -42,7 +49,7 @@ public class ModelmapperDemoApplicationTests {
 
         private List<Droid> createDroids(Unicorn unicorn) {
             return Stream.generate(() -> {
-                Droid droid = new Droid(idCounter, "Droid " + idCounter++, unicorn, true);
+                Droid droid = new Droid("Droid " + idCounter++, unicorn, true);
                 droid.setCupcakes(createCupcakes(droid));
                 return droid;
             })
@@ -51,8 +58,7 @@ public class ModelmapperDemoApplicationTests {
         }
 
         private List<Cupcake> createCupcakes(Droid droid) {
-            return Stream.generate(() -> new Cupcake(idCounter, "Cupcake " + idCounter++,
-                    Arrays.stream(Filling.values()).findAny().orElse(Filling.CHERRY), droid))
+            return Stream.generate(() -> new Cupcake(Arrays.stream(Filling.values()).findAny().orElse(Filling.CHERRY), droid))
                     .limit(10L)
                     .collect(Collectors.toList());
         }

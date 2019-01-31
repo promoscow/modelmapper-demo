@@ -1,6 +1,8 @@
 package ru.xpendence.modelmapperdemo.mapper;
 
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.xpendence.modelmapperdemo.dto.UnicornDto;
@@ -17,14 +19,30 @@ import javax.annotation.PostConstruct;
 @Component
 public class UnicornMapper {
 
+    private final ModelMapper mapper;
+
     @Autowired
-    private ModelMapper mapper;
+    public UnicornMapper(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Unicorn.class, UnicornDto.class)
-                .addMappings(m -> {
-                    m.skip();
-                })
+                .addMappings(m -> m.skip(UnicornDto::setDroids)).setPostConverter(toDtoConverter());
+        mapper.createTypeMap(UnicornDto.class, Unicorn.class)
+                .addMappings(m -> m.skip(Unicorn::setDroids)).setPostConverter(toEntityConverter());
+    }
+
+    public UnicornDto toDto(Unicorn unicorn) {
+        return mapper.map(unicorn, UnicornDto.class);
+    }
+
+    public Converter<Unicorn, UnicornDto> toDtoConverter() {
+        return MappingContext::getDestination;
+    }
+
+    public Converter<UnicornDto, Unicorn> toEntityConverter() {
+        return MappingContext::getDestination;
     }
 }
