@@ -2,6 +2,7 @@ package ru.xpendence.modelmapperdemo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,11 +11,11 @@ import lombok.NoArgsConstructor;
  * Time: 13:55
  * e-mail: vyacheslav.chernyshov@stoloto.ru
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CupcakeDto {
+public class CupcakeDto extends AbstractDto {
 
-    private Long id;
     private String filling;
 }
