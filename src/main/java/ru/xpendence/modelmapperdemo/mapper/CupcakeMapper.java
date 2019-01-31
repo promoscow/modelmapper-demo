@@ -1,6 +1,10 @@
 package ru.xpendence.modelmapperdemo.mapper;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.xpendence.modelmapperdemo.dto.CupcakeDto;
+import ru.xpendence.modelmapperdemo.entity.Cupcake;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -11,4 +15,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class CupcakeMapper {
 
+    private final ModelMapper mapper;
+
+    @Autowired
+    public CupcakeMapper(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public CupcakeDto toDto(Cupcake cupcake) {
+        return mapper.map(cupcake, CupcakeDto.class);
+    }
 }
