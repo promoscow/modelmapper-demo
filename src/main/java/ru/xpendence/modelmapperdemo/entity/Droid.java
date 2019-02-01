@@ -1,6 +1,9 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +15,6 @@ import java.util.List;
  * e-mail: vyacheslav.chernyshov@stoloto.ru
  */
 @Setter
-@ToString
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "droids")

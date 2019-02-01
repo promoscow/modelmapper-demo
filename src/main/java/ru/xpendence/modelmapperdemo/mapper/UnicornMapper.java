@@ -42,6 +42,10 @@ public class UnicornMapper {
         return mapper.map(unicorn, UnicornDto.class);
     }
 
+    public Unicorn toEntity(UnicornDto dto) {
+        return mapper.map(dto, Unicorn.class);
+    }
+
     public Converter<Unicorn, UnicornDto> toDtoConverter() {
         return context -> {
             Unicorn source = context.getSource();

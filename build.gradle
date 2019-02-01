@@ -31,5 +31,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+    
+//    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
+//    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+//    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.8'
+
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.7'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.9.7'
 }

@@ -1,6 +1,9 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.xpendence.modelmapperdemo.attributes.Filling;
 
 import javax.persistence.*;
@@ -14,7 +17,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cupcakes")
 @Setter
-@ToString
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor

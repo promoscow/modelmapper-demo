@@ -1,6 +1,9 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.xpendence.modelmapperdemo.attributes.Color;
 
 import javax.persistence.*;
@@ -15,7 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "unicorns")
 @EqualsAndHashCode(callSuper = false)
-@ToString
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
