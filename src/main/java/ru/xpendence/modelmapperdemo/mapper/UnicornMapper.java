@@ -9,6 +9,7 @@ import ru.xpendence.modelmapperdemo.dto.UnicornDto;
 import ru.xpendence.modelmapperdemo.entity.Unicorn;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -51,7 +52,9 @@ public class UnicornMapper {
     }
 
     private void mapSpecificFields(Unicorn source, UnicornDto destination) {
-        destination.setDroids(source.getDroids().stream().map(droidMapper::toDto).collect(Collectors.toList()));
+        if (Objects.nonNull(source.getDroids())) {
+            destination.setDroids(source.getDroids().stream().map(droidMapper::toDto).collect(Collectors.toList()));
+        }
     }
 
     public Converter<UnicornDto, Unicorn> toEntityConverter() {

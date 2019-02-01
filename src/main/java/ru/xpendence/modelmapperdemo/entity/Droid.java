@@ -31,6 +31,11 @@ public class Droid extends AbstractEntity {
         this.alive = alive;
     }
 
+    public Droid(String name, Boolean alive) {
+        this.name = name;
+        this.alive = alive;
+    }
+
     @Column(name = "name")
     public String getName() {
         return name;

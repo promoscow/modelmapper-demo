@@ -33,4 +33,8 @@ public class Cupcake extends AbstractEntity {
     public Droid getDroid() {
         return droid;
     }
+
+    public Cupcake(Filling filling) {
+        this.filling = filling;
+    }
 }
