@@ -1,15 +1,14 @@
 package ru.xpendence.modelmapperdemo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.xpendence.modelmapperdemo.attributes.Color;
 import ru.xpendence.modelmapperdemo.attributes.Filling;
-import ru.xpendence.modelmapperdemo.dto.UnicornDto;
 import ru.xpendence.modelmapperdemo.entity.Cupcake;
 import ru.xpendence.modelmapperdemo.entity.Droid;
 import ru.xpendence.modelmapperdemo.entity.Unicorn;
@@ -48,22 +47,38 @@ public class ModelmapperDemoApplicationTests {
         @Test
         @Transactional
         public void mapperTest() throws Exception {
-            idCounter = 1L;
-            createEntities();
 
-            droids = createDroids(unicorn);
-            droids.forEach(this::createCupcakes);
+            createUnicorn();
+            Unicorn unicorn = unicornRepository.findAll()
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new DataAccessException("Can't retrieve entity :/") {});
+            createDroids(unicorn);
 
-            UnicornDto unicornDto = unicornMapper.toDto(unicorn);
-            System.out.println(new ObjectMapper().writeValueAsString(unicornDto));
+            System.out.println();
+//            idCounter = 1L;
+//            createEntities();
+//
+//            droids = createDroids(unicorn);
+//            droids.forEach(this::createCupcakes);
+//
+//            UnicornDto unicornDto = unicornMapper.toDto(unicorn);
+//            Unicorn unicornResult = unicornMapper.toEntity(unicornDto);
+//
+//
+//            System.out.println(new ObjectMapper().writeValueAsString(unicornDto));
         }
 
-        private void createEntities() {
+    private void createUnicorn() {
+        unicornRepository.save(new Unicorn("Unicorn test", Color.PINK));
+    }
+
+    private void createEntities() {
             unicorn = new Unicorn();
             unicorn.setId(idCounter);
             unicorn.setName("Unicorn " + idCounter++);
             unicorn.setColor(Arrays.stream(Color.values()).findAny().orElse(Color.BLACK));
-            unicorn.setDroids(createDroids(unicorn));
+//            unicorn.setDroids(createDroids(unicorn));
             unicornRepository.save(unicorn);
         }
 

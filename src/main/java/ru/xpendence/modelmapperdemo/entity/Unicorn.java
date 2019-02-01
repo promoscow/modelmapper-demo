@@ -27,6 +27,11 @@ public class Unicorn extends AbstractEntity {
     private List<Droid> droids;
     private Color color;
 
+    public Unicorn(String name, Color color) {
+        this.name = name;
+        this.color = color;
+    }
+
     @Column(name = "name")
     public String getName() {
         return name;

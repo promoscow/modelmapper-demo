@@ -2,11 +2,12 @@ package ru.xpendence.modelmapperdemo.mapper;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.xpendence.modelmapperdemo.dto.DroidDto;
 import ru.xpendence.modelmapperdemo.dto.UnicornDto;
 import ru.xpendence.modelmapperdemo.entity.Unicorn;
+import ru.xpendence.modelmapperdemo.repository.DroidRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
@@ -23,11 +24,13 @@ public class UnicornMapper {
 
     private final ModelMapper mapper;
     private final DroidMapper droidMapper;
+    private final DroidRepository droidRepository;
 
     @Autowired
-    public UnicornMapper(ModelMapper mapper, DroidMapper droidMapper) {
+    public UnicornMapper(ModelMapper mapper, DroidMapper droidMapper, DroidRepository droidRepository) {
         this.mapper = mapper;
         this.droidMapper = droidMapper;
+        this.droidRepository = droidRepository;
     }
 
     @PostConstruct
@@ -62,6 +65,23 @@ public class UnicornMapper {
     }
 
     public Converter<UnicornDto, Unicorn> toEntityConverter() {
-        return MappingContext::getDestination;
+        return context -> {
+            UnicornDto source = context.getSource();
+            Unicorn destination = context.getDestination();
+            mapSpecificFields(source, destination);
+            return context.getDestination();
+        };
+    }
+
+    private void mapSpecificFields(UnicornDto source, Unicorn destination) {
+        if (Objects.nonNull(source.getDroids())) {
+            destination.setDroids(droidRepository.findAllByIdIn(
+                    source.getDroids()
+                            .stream()
+                            .filter(d -> Objects.nonNull(d.getId()))
+                            .map(DroidDto::getId)
+                            .collect(Collectors.toList()))
+            );
+        }
     }
 }
