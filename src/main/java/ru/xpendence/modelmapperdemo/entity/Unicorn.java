@@ -37,7 +37,7 @@ public class Unicorn extends AbstractEntity {
         return name;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "unicorn")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "unicorn")
     public List<Droid> getDroids() {
         return droids;
     }

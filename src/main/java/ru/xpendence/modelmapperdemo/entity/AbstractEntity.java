@@ -1,6 +1,9 @@
 package ru.xpendence.modelmapperdemo.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +18,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Setter
 @EqualsAndHashCode
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class AbstractEntity implements Serializable {

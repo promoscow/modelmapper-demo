@@ -43,13 +43,13 @@ public class Droid extends AbstractEntity {
         return name;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unicorn_id")
     public Unicorn getUnicorn() {
         return unicorn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "droid")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "droid")
     public List<Cupcake> getCupcakes() {
         return cupcakes;
     }

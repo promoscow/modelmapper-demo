@@ -30,7 +30,7 @@ public class Cupcake extends AbstractEntity {
         return filling;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "droid_id")
     public Droid getDroid() {
         return droid;
