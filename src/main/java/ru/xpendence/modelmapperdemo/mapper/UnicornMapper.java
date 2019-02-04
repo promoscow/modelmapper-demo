@@ -1,10 +1,7 @@
 package ru.xpendence.modelmapperdemo.mapper;
 
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.xpendence.modelmapperdemo.dto.DroidDto;
 import ru.xpendence.modelmapperdemo.dto.UnicornDto;
 import ru.xpendence.modelmapperdemo.entity.Unicorn;
 import ru.xpendence.modelmapperdemo.repository.DroidRepository;
@@ -19,15 +16,13 @@ import java.util.stream.Collectors;
  * e-mail: 2262288@gmail.com
  */
 @Component
-public class UnicornMapper {
+public class UnicornMapper extends AbstractMapper<Unicorn, UnicornDto> {
 
-    private final ModelMapper mapper;
     private final DroidMapper droidMapper;
     private final DroidRepository droidRepository;
 
     @Autowired
-    public UnicornMapper(ModelMapper mapper, DroidMapper droidMapper, DroidRepository droidRepository) {
-        this.mapper = mapper;
+    public UnicornMapper(DroidMapper droidMapper, DroidRepository droidRepository) {
         this.droidMapper = droidMapper;
         this.droidRepository = droidRepository;
     }
@@ -40,47 +35,17 @@ public class UnicornMapper {
                 .addMappings(m -> m.skip(Unicorn::setDroids)).setPostConverter(toEntityConverter());
     }
 
-    public UnicornDto toDto(Unicorn unicorn) {
-        return mapper.map(unicorn, UnicornDto.class);
-    }
-
-    public Unicorn toEntity(UnicornDto dto) {
-        return mapper.map(dto, Unicorn.class);
-    }
-
-    public Converter<Unicorn, UnicornDto> toDtoConverter() {
-        return context -> {
-            Unicorn source = context.getSource();
-            UnicornDto destination = context.getDestination();
-            mapSpecificFields(source, destination);
-            return context.getDestination();
-        };
-    }
-
-    public Converter<UnicornDto, Unicorn> toEntityConverter() {
-        return context -> {
-            UnicornDto source = context.getSource();
-            Unicorn destination = context.getDestination();
-            mapSpecificFields(source, destination);
-            return context.getDestination();
-        };
-    }
-
-    private void mapSpecificFields(Unicorn source, UnicornDto destination) {
+    @Override
+    void mapSpecificFields(Unicorn source, UnicornDto destination) {
         if (Objects.nonNull(source.getDroids())) {
             destination.setDroids(source.getDroids().stream().map(droidMapper::toDto).collect(Collectors.toList()));
         }
     }
 
-    private void mapSpecificFields(UnicornDto source, Unicorn destination) {
+    @Override
+    void mapSpecificFields(UnicornDto source, Unicorn destination) {
         if (Objects.nonNull(source.getDroids())) {
-            destination.setDroids(droidRepository.findAllByIdIn(
-                    source.getDroids()
-                            .stream()
-                            .filter(d -> Objects.nonNull(d.getId()))
-                            .map(DroidDto::getId)
-                            .collect(Collectors.toList()))
-            );
+            destination.setDroids(droidRepository.findAllByIdIn(getIds(source.getDroids())));
         }
     }
 }
