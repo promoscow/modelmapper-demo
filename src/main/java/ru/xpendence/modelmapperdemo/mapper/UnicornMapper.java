@@ -58,12 +58,6 @@ public class UnicornMapper {
         };
     }
 
-    private void mapSpecificFields(Unicorn source, UnicornDto destination) {
-        if (Objects.nonNull(source.getDroids())) {
-            destination.setDroids(source.getDroids().stream().map(droidMapper::toDto).collect(Collectors.toList()));
-        }
-    }
-
     public Converter<UnicornDto, Unicorn> toEntityConverter() {
         return context -> {
             UnicornDto source = context.getSource();
@@ -71,6 +65,12 @@ public class UnicornMapper {
             mapSpecificFields(source, destination);
             return context.getDestination();
         };
+    }
+
+    private void mapSpecificFields(Unicorn source, UnicornDto destination) {
+        if (Objects.nonNull(source.getDroids())) {
+            destination.setDroids(source.getDroids().stream().map(droidMapper::toDto).collect(Collectors.toList()));
+        }
     }
 
     private void mapSpecificFields(UnicornDto source, Unicorn destination) {
