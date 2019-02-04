@@ -55,7 +55,8 @@ public class ModelmapperDemoApplicationTests {
     @Test
     public void mapperTest() {
         unicorn = unicornRepository.findById(unicorn.getId())
-                .orElseThrow(() -> new DataAccessException("Unable to get entity from Database by id " + unicorn.getId()) {
+                .orElseThrow(()
+                        -> new DataAccessException("Unable to get entity from Database by id " + unicorn.getId()) {
                 });
         droids = droidRepository.findAllByIdIn(droids.stream().map(Droid::getId).collect(Collectors.toList()));
         cupcakes = cupcakeRepository.findAllByIdIn(cupcakes.stream().map(Cupcake::getId).collect(Collectors.toList()));
@@ -67,11 +68,13 @@ public class ModelmapperDemoApplicationTests {
     }
 
     private Unicorn createUnicorn() {
-        return unicornRepository.save(new Unicorn("Unicorn " + LocalTime.now(), Color.PINK));
+        return unicornRepository.save(new Unicorn("Unicorn " + LocalTime.now().toNanoOfDay(), Color.PINK));
     }
 
     private List<Droid> createDroids(Unicorn unicorn) {
-        return Stream.generate(() -> droidRepository.save(new Droid("Droid " + LocalTime.now(), unicorn, true)))
+        return Stream.generate(() -> droidRepository.save(
+                new Droid("Droid " + LocalTime.now().toNanoOfDay(), unicorn, true))
+        )
                 .limit(3L)
                 .collect(Collectors.toList());
     }
