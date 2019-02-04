@@ -1,5 +1,6 @@
 package ru.xpendence.modelmapperdemo;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,29 +53,25 @@ public class ModelmapperDemoApplicationTests {
     }
 
     @Test
-    public void mapperTest() throws Exception {
+    public void mapperTest() {
+        unicorn = unicornRepository.findById(unicorn.getId())
+                .orElseThrow(() -> new DataAccessException("Unable to get entity from Database by id " + unicorn.getId()) {
+                });
+        droids = droidRepository.findAllByIdIn(droids.stream().map(Droid::getId).collect(Collectors.toList()));
+        cupcakes = cupcakeRepository.findAllByIdIn(cupcakes.stream().map(Cupcake::getId).collect(Collectors.toList()));
 
-        Unicorn unicorn1 = unicornRepository.findById(unicorn.getId())
-                .orElseThrow(() -> new DataAccessException("Unable to get entity from Database by id " + unicorn.getId()) {});
-        List<Droid> droids1 = droidRepository.findAllByIdIn(droids.stream().map(Droid::getId).collect(Collectors.toList()));
-        List<Cupcake> cupcakes1 = cupcakeRepository.findAllByIdIn(cupcakes.stream().map(Cupcake::getId).collect(Collectors.toList()));
+        UnicornDto unicornDto = unicornMapper.toDto(unicorn);
+        unicorn = unicornMapper.toEntity(unicornDto);
 
-        UnicornDto unicornDto = unicornMapper.toDto(unicorn1);
-        Unicorn u = unicornMapper.toEntity(unicornDto);
-        System.out.println();
+        Assert.assertEquals(unicorn.getId(), unicornDto.getId());
     }
 
     private Unicorn createUnicorn() {
-        return unicornRepository.save(new Unicorn("Unicorn test", Color.PINK));
+        return unicornRepository.save(new Unicorn("Unicorn " + LocalTime.now(), Color.PINK));
     }
 
     private List<Droid> createDroids(Unicorn unicorn) {
-        return Stream.generate(() -> {
-            Droid droid = new Droid("Droid " + LocalTime.now(), unicorn, true);
-//                droid.setCupcakes(createCupcakes(droid));
-            droidRepository.save(droid);
-            return droid;
-        })
+        return Stream.generate(() -> droidRepository.save(new Droid("Droid " + LocalTime.now(), unicorn, true)))
                 .limit(3L)
                 .collect(Collectors.toList());
     }
@@ -86,6 +83,5 @@ public class ModelmapperDemoApplicationTests {
                 .limit(3L)
                 .collect(Collectors.toList());
     }
-
 }
 
