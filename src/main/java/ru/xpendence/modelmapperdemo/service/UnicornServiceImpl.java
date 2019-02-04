@@ -9,8 +9,7 @@ import ru.xpendence.modelmapperdemo.repository.UnicornRepository;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 01.02.19
- * Time: 19:01
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @Service
 public class UnicornServiceImpl implements UnicornService {

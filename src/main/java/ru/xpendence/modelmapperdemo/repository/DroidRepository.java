@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 01.02.19
- * Time: 17:15
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @Repository
 public interface DroidRepository extends JpaRepository<Droid, Long> {

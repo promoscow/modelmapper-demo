@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 29.01.19
- * Time: 17:12
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @Data
 public abstract class AbstractDto implements Serializable {

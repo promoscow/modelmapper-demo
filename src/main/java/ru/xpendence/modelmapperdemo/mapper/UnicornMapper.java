@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 29.01.19
- * Time: 17:53
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @Component
 public class UnicornMapper {

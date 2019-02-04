@@ -9,8 +9,7 @@ import ru.xpendence.modelmapperdemo.entity.Cupcake;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 30.01.19
- * Time: 18:21
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @Component
 public class CupcakeMapper {

@@ -7,8 +7,7 @@ import ru.xpendence.modelmapperdemo.entity.Unicorn;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 01.02.19
- * Time: 17:15
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @Repository
 public interface UnicornRepository extends JpaRepository<Unicorn, Long> {

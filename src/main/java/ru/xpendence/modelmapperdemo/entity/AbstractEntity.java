@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 /**
  * Author: Vyacheslav Chernyshov
  * Date: 29.01.19
- * Time: 17:08
- * e-mail: vyacheslav.chernyshov@stoloto.ru
+ * e-mail: 2262288@gmail.com
  */
 @MappedSuperclass
 @Setter
