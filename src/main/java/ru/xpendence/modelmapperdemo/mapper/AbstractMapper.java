@@ -1,5 +1,6 @@
 package ru.xpendence.modelmapperdemo.mapper;
 
+import lombok.Setter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,19 @@ import java.util.stream.Collectors;
  * Time: 21:55
  * e-mail: 2262288@gmail.com
  */
+@Setter
 public abstract class AbstractMapper<E extends AbstractEntity, D extends AbstractDto> implements Mapper<E, D> {
 
     @Autowired
     ModelMapper mapper;
 
-    Class<E> entityClass;
-    Class<D> dtoClass;
+    private Class<E> entityClass;
+    private Class<D> dtoClass;
+
+    AbstractMapper(Class<E> entityClass, Class<D> dtoClass) {
+        this.entityClass = entityClass;
+        this.dtoClass = dtoClass;
+    }
 
     @Override
     public E toEntity(D dto) {

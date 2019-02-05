@@ -17,4 +17,5 @@ import lombok.NoArgsConstructor;
 public class CupcakeDto extends AbstractDto {
 
     private String filling;
+    private Long droid;
 }

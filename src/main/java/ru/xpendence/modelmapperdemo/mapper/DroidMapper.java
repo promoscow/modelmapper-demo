@@ -1,15 +1,13 @@
 package ru.xpendence.modelmapperdemo.mapper;
 
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.xpendence.modelmapperdemo.dto.DroidDto;
 import ru.xpendence.modelmapperdemo.entity.Droid;
+import ru.xpendence.modelmapperdemo.repository.UnicornRepository;
 
 import javax.annotation.PostConstruct;
-import java.util.stream.Collectors;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -17,43 +15,33 @@ import java.util.stream.Collectors;
  * e-mail: 2262288@gmail.com
  */
 @Component
-public class DroidMapper {
+public class DroidMapper extends AbstractMapper<Droid, DroidDto> {
 
     private final ModelMapper mapper;
-    private final CupcakeMapper cupcakeMapper;
+    private final UnicornRepository unicornRepository;
 
     @Autowired
-    public DroidMapper(ModelMapper mapper, CupcakeMapper cupcakeMapper) {
+    public DroidMapper(ModelMapper mapper, UnicornRepository unicornRepository) {
+        super(Droid.class, DroidDto.class);
         this.mapper = mapper;
-        this.cupcakeMapper = cupcakeMapper;
+        this.unicornRepository = unicornRepository;
     }
 
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Droid.class, DroidDto.class)
-                .addMappings(m -> m.skip(DroidDto::setCupcakes)).setPostConverter(toDtoConverter());
+                .addMappings(m -> m.skip(DroidDto::setUnicorn)).setPostConverter(toDtoConverter());
         mapper.createTypeMap(DroidDto.class, Droid.class)
-                .addMappings(m -> m.skip(Droid::setCupcakes)).setPostConverter(toEntityConverter());
+                .addMappings(m -> m.skip(Droid::setUnicorn)).setPostConverter(toEntityConverter());
     }
 
-    public DroidDto toDto(Droid droid) {
-        return mapper.map(droid, DroidDto.class);
+    @Override
+    public void mapSpecificFields(Droid source, DroidDto destination) {
+        destination.setUnicorn(source.getUnicorn().getId());
     }
 
-    private Converter<Droid, DroidDto> toDtoConverter() {
-        return context -> {
-            Droid source = context.getSource();
-            DroidDto destination = context.getDestination();
-            mapSpecificFields(source, destination);
-            return context.getDestination();
-        };
-    }
-
-    private void mapSpecificFields(Droid source, DroidDto destination) {
-        destination.setCupcakes(source.getCupcakes().stream().map(cupcakeMapper::toDto).collect(Collectors.toList()));
-    }
-
-    private Converter<DroidDto, Droid> toEntityConverter() {
-        return MappingContext::getDestination;
+    @Override
+    void mapSpecificFields(DroidDto source, Droid destination) {
+        destination.setUnicorn(unicornRepository.findById(source.getUnicorn()).orElse(null));
     }
 }
