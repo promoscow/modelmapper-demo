@@ -1,15 +1,12 @@
 package ru.xpendence.modelmapperdemo.mapper;
 
-import lombok.Setter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.xpendence.modelmapperdemo.dto.AbstractDto;
 import ru.xpendence.modelmapperdemo.entity.AbstractEntity;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -17,7 +14,6 @@ import java.util.stream.Collectors;
  * Time: 21:55
  * e-mail: 2262288@gmail.com
  */
-@Setter
 public abstract class AbstractMapper<E extends AbstractEntity, D extends AbstractDto> implements Mapper<E, D> {
 
     @Autowired
@@ -67,13 +63,5 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
     }
 
     void mapSpecificFields(D source, E destination) {
-    }
-
-    List<Long> getIds(List<? extends AbstractDto> sourceList) {
-        return sourceList
-                .stream()
-                .filter(s -> Objects.nonNull(s.getId()))
-                .map(AbstractDto::getId)
-                .collect(Collectors.toList());
     }
 }

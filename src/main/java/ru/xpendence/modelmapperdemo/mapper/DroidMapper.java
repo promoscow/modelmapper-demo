@@ -8,6 +8,7 @@ import ru.xpendence.modelmapperdemo.entity.Droid;
 import ru.xpendence.modelmapperdemo.repository.UnicornRepository;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -30,18 +31,22 @@ public class DroidMapper extends AbstractMapper<Droid, DroidDto> {
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Droid.class, DroidDto.class)
-                .addMappings(m -> m.skip(DroidDto::setUnicorn)).setPostConverter(toDtoConverter());
+                .addMappings(m -> m.skip(DroidDto::setUnicornId)).setPostConverter(toDtoConverter());
         mapper.createTypeMap(DroidDto.class, Droid.class)
                 .addMappings(m -> m.skip(Droid::setUnicorn)).setPostConverter(toEntityConverter());
     }
 
     @Override
     public void mapSpecificFields(Droid source, DroidDto destination) {
-        destination.setUnicorn(source.getUnicorn().getId());
+        destination.setUnicornId(getId(source));
+    }
+
+    private Long getId(Droid source) {
+        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getUnicorn().getId();
     }
 
     @Override
     void mapSpecificFields(DroidDto source, Droid destination) {
-        destination.setUnicorn(unicornRepository.findById(source.getUnicorn()).orElse(null));
+        destination.setUnicorn(unicornRepository.findById(source.getUnicornId()).orElse(null));
     }
 }

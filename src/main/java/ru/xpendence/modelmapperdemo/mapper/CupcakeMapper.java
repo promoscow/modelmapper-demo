@@ -8,6 +8,7 @@ import ru.xpendence.modelmapperdemo.entity.Cupcake;
 import ru.xpendence.modelmapperdemo.repository.DroidRepository;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 /**
  * Author: Vyacheslav Chernyshov
@@ -30,18 +31,22 @@ public class CupcakeMapper extends AbstractMapper<Cupcake, CupcakeDto> {
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Cupcake.class, CupcakeDto.class)
-                .addMappings(m -> m.skip(CupcakeDto::setDroid)).setPostConverter(toDtoConverter());
+                .addMappings(m -> m.skip(CupcakeDto::setDroidId)).setPostConverter(toDtoConverter());
         mapper.createTypeMap(CupcakeDto.class, Cupcake.class)
                 .addMappings(m -> m.skip(Cupcake::setDroid)).setPostConverter(toEntityConverter());
     }
 
     @Override
     void mapSpecificFields(Cupcake source, CupcakeDto destination) {
-        destination.setDroid(source.getDroid().getId());
+        destination.setDroidId(getId(source));
+    }
+
+    private Long getId(Cupcake source) {
+        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getDroid().getId();
     }
 
     @Override
     void mapSpecificFields(CupcakeDto source, Cupcake destination) {
-        destination.setDroid(droidRepository.findById(source.getDroid()).orElse(null));
+        destination.setDroid(droidRepository.findById(source.getDroidId()).orElse(null));
     }
 }
